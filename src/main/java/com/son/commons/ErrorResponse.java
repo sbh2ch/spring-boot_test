@@ -11,4 +11,12 @@ import lombok.Data;
 public class ErrorResponse {
     private String errorCode;
     private String message;
+    //private List<FiledError> errors;
+
+    //todo 나중에
+    public static class FiledError {
+        private String field;
+        private String value;
+        private String reason;
+    }
 }

@@ -14,8 +14,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -47,6 +49,12 @@ public class AccountControllerTest {
         ResultActions result = mockMvc.perform(post("/accounts").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createDto)));
         result.andDo(print());
         result.andExpect(status().isCreated());
+        result.andExpect(jsonPath("$.username", is("sbh2ch")));
+
+        result = mockMvc.perform(post("/accounts").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createDto)));
+        result.andDo(print());
+        result.andExpect(status().isBadRequest());
+        result.andExpect(jsonPath("$.errorCode", is("duplicated.username.exception")));
     }
 
     @Test
@@ -59,5 +67,6 @@ public class AccountControllerTest {
 
         result.andDo(print());
         result.andExpect(status().isBadRequest());
+        result.andExpect(jsonPath("$.errorCode", is("bad.request")));
     }
 }

@@ -20,22 +20,6 @@ public class AccountDto {
         @NotBlank
         @Size(min = 5)
         private String password;
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
     }
 
     @Data
@@ -45,48 +29,5 @@ public class AccountDto {
         private String fullName;
         private Date joined;
         private Date updated;
-
-        public Response() {
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        public Date getJoined() {
-            return joined;
-        }
-
-        public void setJoined(Date joined) {
-            this.joined = joined;
-        }
-
-        public Date getUpdated() {
-            return updated;
-        }
-
-        public void setUpdated(Date updated) {
-            this.updated = updated;
-        }
     }
 }
