@@ -21,6 +21,8 @@ public class AccountService {
 
     public Account createAccount(AccountDto.Create dto) {
         Account account = modelMapper.map(dto, Account.class);
+        //todo 유효한 username인지 판단
+        //todo password encryption
 
         Date date = new Date();
         account.setJoined(date);

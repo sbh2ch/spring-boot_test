@@ -1,5 +1,6 @@
 package com.son.account;
 
+import com.son.commons.ErrorResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,7 @@ public class AccountController {
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
     public ResponseEntity createAccount(@RequestBody @Valid AccountDto.Create create, BindingResult result) {
         if (result.hasErrors()) {
-            //TODO 에러 응답 본문 추가하기
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorResponse("bad.request", "잘못된 요청"), HttpStatus.BAD_REQUEST);
         }
 
         Account newAccount = service.createAccount(create);

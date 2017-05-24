@@ -1,6 +1,7 @@
 package com.son.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,15 @@ public class AccountControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    MockMvc mockMvc;
+
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
     @Test
     public void createAccount() throws Exception {
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         AccountDto.Create createDto = new AccountDto.Create();
         createDto.setUsername("sbh2ch");
         createDto.setPassword("password");
@@ -42,5 +49,15 @@ public class AccountControllerTest {
         result.andExpect(status().isCreated());
     }
 
+    @Test
+    public void createAccount_BadRequest() throws Exception {
+        AccountDto.Create createDto = new AccountDto.Create();
+        createDto.setUsername("2ch");
+        createDto.setPassword("a");
 
+        ResultActions result = mockMvc.perform(post("/accounts").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createDto)));
+
+        result.andDo(print());
+        result.andExpect(status().isBadRequest());
+    }
 }
