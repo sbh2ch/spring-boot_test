@@ -2,9 +2,6 @@ package com.son.account;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 /**
  * Created by kiost on 2017-05-23.
  */

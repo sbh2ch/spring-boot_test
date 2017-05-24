@@ -25,8 +25,6 @@ public class AccountController {
 
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
     public ResponseEntity createAccount(@RequestBody @Valid AccountDto.Create create, BindingResult result) {
-        System.out.println("**********"+create.getUsername());
-        System.out.println(create.getPassword());
         if (result.hasErrors()) {
             //TODO 에러 응답 본문 추가하기
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
