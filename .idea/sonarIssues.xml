@@ -53,6 +53,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$USER_HOME$/Documents/boot-test/src/main/java/me/whiteship/controller/AccountControlle.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../satellite/pom.xml">
           <value>
             <set />
@@ -94,6 +99,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../satellite/src/main/java/kr/goci/kosc/account/Application.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../satellite/src/main/java/kr/goci/kosc/account/UserDuplicatedException.java">
           <value>
             <set />
           </value>

@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
+@Rollback
 public class AccountControllerTest {
     @Autowired
     WebApplicationContext wac;
@@ -40,6 +43,7 @@ public class AccountControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
+    //@Rollback(false), @Commit // 만약 롤백 시키기 싫다면
     @Test
     public void createAccount() throws Exception {
         AccountDto.Create createDto = new AccountDto.Create();
@@ -68,5 +72,18 @@ public class AccountControllerTest {
         result.andDo(print());
         result.andExpect(status().isBadRequest());
         result.andExpect(jsonPath("$.errorCode", is("bad.request")));
+    }
+
+    @Test
+    public void getAccounts() throws Exception {
+        AccountDto.Create createAccount = new AccountDto.Create();
+        createAccount.setUsername("sonbh");
+        createAccount.setPassword("12345");
+        mockMvc.perform(post("/accounts").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createAccount)));
+
+        ResultActions result = mockMvc.perform(get("/accounts"));
+
+        result.andDo(print());
+        result.andExpect(status().isOk());
     }
 }
