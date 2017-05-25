@@ -36,6 +36,9 @@ public class AccountControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private AccountService service;
+
     MockMvc mockMvc;
 
     @Before
@@ -79,11 +82,21 @@ public class AccountControllerTest {
         AccountDto.Create createAccount = new AccountDto.Create();
         createAccount.setUsername("sonbh");
         createAccount.setPassword("12345");
-        mockMvc.perform(post("/accounts").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createAccount)));
+        service.createAccount(createAccount);
 
         ResultActions result = mockMvc.perform(get("/accounts"));
 
         result.andDo(print());
         result.andExpect(status().isOk());
     }
+    // {"content":
+    // [{"id":1,"username":"sonbh","fullName":null,"joined":1495692458475,"updated":1495692458475}],
+    // "totalElements":1,
+    // "totalPages":1,
+    // "last":true,
+    // "number":0,
+    // "size":20,
+    // "sort":null,
+    // "first":true,
+    // "numberOfElements":1}
 }

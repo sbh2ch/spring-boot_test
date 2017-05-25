@@ -47,17 +47,13 @@ public class AccountController {
         2. 파라미터 이용. 1번에 비해선 좀 더 직관적임 + 지저분한건 마찬가지
         3. 서비스에서 바로 예외 던지기
         4. 콜백을 이용한 비동기식 예외처리
-        * */
+        */
 
         return new ResponseEntity<>(modelMapper.map(newAccount, AccountDto.Response.class), HttpStatus.CREATED);
     }
 
-    @ExceptionHandler(UserDuplicatedException.class)
-    public ResponseEntity handleUserDuplicatedException(UserDuplicatedException e) {
-        return new ResponseEntity<>(new ErrorResponse("duplicated.username.exception", "[" + e.getUsername() + "] 중복 username"), HttpStatus.BAD_REQUEST);
-    }
-
-    // stream() versus parallelStream()
+    //TODO study stream(), collect()
+    //TODO stream() versus parallelStream()
     // /accounts?page=0&size=20&sort=username,asc&joined,desc
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
     public ResponseEntity getAccounts(Pageable pageable) {
@@ -68,4 +64,14 @@ public class AccountController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @ExceptionHandler(UserDuplicatedException.class)
+    public ResponseEntity handleUserDuplicatedException(UserDuplicatedException e) {
+        return new ResponseEntity<>(new ErrorResponse("duplicated.username.exception", "[" + e.getUsername() + "] 중복 username"), HttpStatus.BAD_REQUEST);
+    }
+
+    //TODO Hateos
+    //TODO 뷰 NSPA 1. Thymeleaf   ||||   SPA 2. React
+
+
 }
