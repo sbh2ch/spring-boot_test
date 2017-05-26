@@ -108,12 +108,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../satellite/src/main/java/kr/goci/kosc/common/ExceptionHnadlers.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../satellite/src/main/resources/application.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../satellite/src/test/java/kr/goci/kosc/account/AccountControllerTest.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../satellite/src/test/java/kr/goci/kosc/account/AccountTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../satellite/src/test/resources/application.properties">
           <value>
             <set />
           </value>
