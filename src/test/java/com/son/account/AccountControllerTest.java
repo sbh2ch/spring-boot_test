@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -123,5 +121,24 @@ public class AccountControllerTest {
         result.andDo(print());
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.fullName", is("byunghwa Son")));
+    }
+
+    @Test
+    public void deleteAccount_Error() throws Exception {
+        ResultActions result = mockMvc.perform(delete("/accounts/20"));
+
+        result.andDo(print());
+        result.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteAccount() throws Exception {
+        AccountDto.Create createDto = accountCreateFixture();
+        Account account = service.createAccount(createDto);
+
+        ResultActions result = mockMvc.perform(delete("/accounts/" + account.getId()));
+
+        result.andDo(print());
+        result.andExpect(status().isNoContent());
     }
 }

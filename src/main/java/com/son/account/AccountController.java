@@ -76,13 +76,19 @@ public class AccountController {
          - password:"pass", fullName:"bh son"
      */
     @RequestMapping(value = "/accounts/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateAccount(@PathVariable long id, @RequestBody @Valid AccountDto.Update updateDto, BindingResult result) {
+    public ResponseEntity updateAccount(@PathVariable Long id, @RequestBody @Valid AccountDto.Update updateDto, BindingResult result) {
         if (result.hasErrors())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(modelMapper.map(service.updateAccount(id, updateDto), AccountDto.Response.class), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAccount(@PathVariable Long id) {
+        service.deleteAccount(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);//204
+    }
 
     @ExceptionHandler(AccountDuplicatedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -95,6 +101,7 @@ public class AccountController {
     public ErrorResponse handleAccountNotFoundException(AccountNotFoundException e) {
         return new ErrorResponse("not.found.account.exception", "[" + e.getId() + "] 에 해당하는 계정이 없습니다.");
     }
+
 
     //TODO Hateos
     //TODO 뷰 NSPA 1. Thymeleaf   ||||   SPA 2. React
