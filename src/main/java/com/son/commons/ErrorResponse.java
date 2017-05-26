@@ -13,7 +13,8 @@ import java.util.List;
 public class ErrorResponse {
     private String errorCode;
     private String message;
-    private List<FiledError> errors;
+    //private List<FiledError> errors;
+
 
     //todo 나중에
     public static class FiledError {

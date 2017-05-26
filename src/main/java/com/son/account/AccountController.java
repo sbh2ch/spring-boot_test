@@ -10,14 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 /**
  * Created by kiost on 2017-05-23.
@@ -60,18 +58,44 @@ public class AccountController {
         Page<Account> page = repository.findAll(pageable);
         List<AccountDto.Response> contents = page.getContent().parallelStream().map(account -> modelMapper.map(account, AccountDto.Response.class)).collect(Collectors.toList());
 
-        PageImpl<AccountDto.Response> result = new PageImpl<>(contents, pageable, page.getTotalElements());
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new PageImpl<>(contents, pageable, page.getTotalElements()), HttpStatus.OK);
     }
 
-    @ExceptionHandler(UserDuplicatedException.class)
-    public ResponseEntity handleUserDuplicatedException(UserDuplicatedException e) {
-        return new ResponseEntity<>(new ErrorResponse("duplicated.username.exception", "[" + e.getUsername() + "] 중복 username"), HttpStatus.BAD_REQUEST);
+    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public AccountDto.Response getAccount(@PathVariable Long id) {
+        return modelMapper.map(service.getAccount(id), AccountDto.Response.class);
+    }
+
+    /*
+    전체 업데이트(put) vs 부분 업데이트(patch)
+    전체업데이트(put) : password:"pass", fullName:"bh son"
+    부분업데이트(patch) :
+         - username:"sbh2ch"
+         - username:"sbh2ch", password:"pass"
+         - password:"pass", fullName:"bh son"
+     */
+    @RequestMapping(value = "/accounts/{id}", method = RequestMethod.PUT)
+    public ResponseEntity updateAccount(@PathVariable long id, @RequestBody @Valid AccountDto.Update updateDto, BindingResult result) {
+        if (result.hasErrors())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(modelMapper.map(service.updateAccount(id, updateDto), AccountDto.Response.class), HttpStatus.OK);
+    }
+
+
+    @ExceptionHandler(AccountDuplicatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleUserDuplicatedException(AccountDuplicatedException e) {
+        return new ErrorResponse("duplicated.username.exception", "[" + e.getUsername() + "] 중복 username");
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleAccountNotFoundException(AccountNotFoundException e) {
+        return new ErrorResponse("not.found.account.exception", "[" + e.getId() + "] 에 해당하는 계정이 없습니다.");
     }
 
     //TODO Hateos
     //TODO 뷰 NSPA 1. Thymeleaf   ||||   SPA 2. React
-
-
 }

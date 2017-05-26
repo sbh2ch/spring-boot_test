@@ -53,7 +53,37 @@
             <set />
           </value>
         </entry>
+        <entry key="$MAVEN_REPOSITORY$/org/springframework/data/spring-data-commons/1.13.3.RELEASE/spring-data-commons-1.13.3.RELEASE-sources.jar!/org/springframework/data/domain/Pageable.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$MAVEN_REPOSITORY$/org/springframework/data/spring-data-commons/1.13.3.RELEASE/spring-data-commons-1.13.3.RELEASE-sources.jar!/org/springframework/data/repository/PagingAndSortingRepository.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$MAVEN_REPOSITORY$/org/springframework/spring-test/4.3.8.RELEASE/spring-test-4.3.8.RELEASE.jar!/org/springframework/mock/web/MockFilterChain.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.8.RELEASE/spring-web-4.3.8.RELEASE.jar!/org/springframework/http/HttpStatus.class">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$USER_HOME$/Documents/boot-test/src/main/java/me/whiteship/controller/AccountControlle.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../satellite/.gitignore">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../satellite/logs/test.log">
           <value>
             <set />
           </value>
@@ -123,6 +153,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../satellite/src/test/java/kr/goci/kosc/account/AccountServiceTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../satellite/src/test/java/kr/goci/kosc/account/AccountTest.java">
           <value>
             <set />
@@ -159,6 +194,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/com/son/account/AccountDto.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/com/son/account/AccountNotFoundException.java">
           <value>
             <set />
           </value>
