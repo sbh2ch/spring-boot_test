@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,9 +43,14 @@ public class AccountControllerTest {
 
     MockMvc mockMvc;
 
+    @Autowired
+    private FilterChainProxy filterChainProxy;
+
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilter(filterChainProxy)
+                .build();
     }
 
     private AccountDto.Create accountCreateFixture() {
@@ -82,7 +90,7 @@ public class AccountControllerTest {
         AccountDto.Create createAccount = accountCreateFixture();
         service.createAccount(createAccount);
 
-        ResultActions result = mockMvc.perform(get("/accounts"));
+        ResultActions result = mockMvc.perform(get("/accounts").with(httpBasic(createAccount.getUsername(), createAccount.getPassword())));
 
         result.andDo(print());
         result.andExpect(status().isOk());
@@ -103,7 +111,7 @@ public class AccountControllerTest {
         AccountDto.Create createDto = accountCreateFixture();
         Account account = service.createAccount(createDto);
 
-        ResultActions result = mockMvc.perform(get("/accounts/" + account.getId()));
+        ResultActions result = mockMvc.perform(get("/accounts/" + account.getId()).with(httpBasic(createDto.getUsername(), createDto.getPassword())));
 
         result.andDo(print());
         result.andExpect(status().isOk());
@@ -117,7 +125,7 @@ public class AccountControllerTest {
         updateDto.setFullName("byunghwa Son");
         updateDto.setPassword("byunghwa");
 
-        ResultActions result = mockMvc.perform(put("/accounts/" + account.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updateDto)));
+        ResultActions result = mockMvc.perform(put("/accounts/" + account.getId()).with(httpBasic(createDto.getUsername(), createDto.getPassword())).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updateDto)));
         result.andDo(print());
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.fullName", is("byunghwa Son")));
@@ -125,7 +133,11 @@ public class AccountControllerTest {
 
     @Test
     public void deleteAccount_Error() throws Exception {
-        ResultActions result = mockMvc.perform(delete("/accounts/20"));
+        AccountDto.Create createAccount = accountCreateFixture();
+        service.createAccount(createAccount);
+
+        ResultActions result = mockMvc.perform(delete("/accounts/2131231230")
+                .with(httpBasic(createAccount.getUsername(), createAccount.getPassword())));
 
         result.andDo(print());
         result.andExpect(status().isBadRequest());
@@ -136,7 +148,8 @@ public class AccountControllerTest {
         AccountDto.Create createDto = accountCreateFixture();
         Account account = service.createAccount(createDto);
 
-        ResultActions result = mockMvc.perform(delete("/accounts/" + account.getId()));
+        ResultActions result = mockMvc.perform(delete("/accounts/" + account.getId())
+                .with(httpBasic(createDto.getUsername(), "password")));
 
         result.andDo(print());
         result.andExpect(status().isNoContent());

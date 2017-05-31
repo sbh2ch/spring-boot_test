@@ -25,4 +25,6 @@ public class Account {
     private Date joined;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
+
+    private boolean admin;
 }

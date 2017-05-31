@@ -67,7 +67,7 @@ var SignUp = React.createClass({
         )
     }
 });
-// todo router, module, webpack or browserify
+// todo router, webpack or browserify
 
 var App = React.createClass({
     getInitialState: function () {
@@ -99,3 +99,4 @@ var App = React.createClass({
 });
 
 React.render(<App/>, document.body);
+//TODO React Router, Module
